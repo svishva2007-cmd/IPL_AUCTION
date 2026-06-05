@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Auction Arena — Statistics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="teams.css">
+</head>
+<body>
+
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="logo"><i class="fa-solid fa-gavel"></i> IPL Auction Arena</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="auction.html"><i class="fa-solid fa-gavel"></i> Auction</a></li>
+                <li><a href="teams.html"><i class="fa-solid fa-users"></i> Teams</a></li>
+                <li><a href="statistics.html" class="active" aria-current="page"><i class="fa-solid fa-chart-line"></i> Statistics</a></li>
+            </ul>
+            <button class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <section class="page-header">
+        <span class="page-badge"><i class="fa-solid fa-chart-simple"></i> LIVE ANALYTICS</span>
+        <h1>AUCTION STATISTICS</h1>
+        <p>Track every bid, every sale and every record in real-time.</p>
+    </section>
+
+    <!-- AUCTION PROGRESS OVERVIEW -->
+    <div class="stats-overview" id="statsOverview">
+        <div class="overview-bar-wrap">
+            <div class="overview-bar" id="overviewBar"></div>
+        </div>
+        <div class="overview-label" id="overviewLabel">Loading auction data...</div>
+    </div>
+
+    <!-- TOP SUMMARY CARDS -->
+    <main class="teams-container" id="summaryCards">
+
+        <article class="team-card">
+            <div class="team-card-logo" style="background: linear-gradient(135deg, #00c8ff, #0088cc);"><i class="fa-solid fa-coins"></i></div>
+            <h2>Total Spend</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-money-bill"></i> <strong>Amount:</strong> <span class="info-val" id="statTotalSpend">₹0 Cr</span></p>
+                <p><i class="fa-solid fa-percent"></i> <strong>Of Pool:</strong> <span class="info-val" id="statPoolPct">0%</span></p>
+            </div>
+        </article>
+
+        <article class="team-card">
+            <div class="team-card-logo" style="background: linear-gradient(135deg, #f0b429, #b8860b);"><i class="fa-solid fa-crown"></i></div>
+            <h2>Highest Bid</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-user"></i> <strong>Player:</strong> <span class="info-val" id="statHighPlayer">—</span></p>
+                <p><i class="fa-solid fa-tag"></i> <strong>Price:</strong> <span class="info-val" id="statHighPrice">₹0 Cr</span></p>
+                <p><i class="fa-solid fa-shield"></i> <strong>Bought by:</strong> <span class="info-val" id="statHighTeam">—</span></p>
+            </div>
+        </article>
+
+        <article class="team-card">
+            <div class="team-card-logo" style="background: linear-gradient(135deg, #00e676, #00a854);"><i class="fa-solid fa-check"></i></div>
+            <h2>Players Sold</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-handshake"></i> <strong>Sold:</strong> <span class="info-val" id="statSold">0</span></p>
+                <p><i class="fa-solid fa-xmark"></i> <strong>Unsold:</strong> <span class="info-val" id="statUnsold">0</span></p>
+                <p><i class="fa-solid fa-calculator"></i> <strong>Avg Price:</strong> <span class="info-val" id="statAvgPrice">—</span></p>
+            </div>
+        </article>
+
+        <article class="team-card">
+            <div class="team-card-logo" style="background: linear-gradient(135deg, #ff4444, #aa0000);"><i class="fa-solid fa-fire"></i></div>
+            <h2>Most Active</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-shield"></i> <strong>Team:</strong> <span class="info-val" id="statActiveTeam">—</span></p>
+                <p><i class="fa-solid fa-gavel"></i> <strong>Players:</strong> <span class="info-val" id="statActivePlayers">0</span></p>
+                <p><i class="fa-solid fa-wallet"></i> <strong>Spent:</strong> <span class="info-val" id="statActiveSpent">—</span></p>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- TEAM SPENDING BREAKDOWN -->
+    <section class="stats-section">
+        <h2 class="section-heading"><i class="fa-solid fa-chart-bar"></i> Team Spending Breakdown</h2>
+        <div class="spending-grid" id="spendingGrid"></div>
+    </section>
+
+    <!-- TEAM RANKINGS -->
+    <section class="stats-section">
+        <h2 class="section-heading"><i class="fa-solid fa-trophy"></i> Team Rankings</h2>
+        <div class="rankings-table-wrap">
+            <table class="rankings-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>TEAM</th>
+                        <th>PLAYERS</th>
+                        <th>SPENT</th>
+                        <th>PURSE LEFT</th>
+                        <th>AVG PRICE</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingsBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- RECENT SALES -->
+    <section class="stats-section">
+        <h2 class="section-heading"><i class="fa-solid fa-list"></i> All Sales</h2>
+        <div class="sales-list" id="salesList"></div>
+    </section>
+
+    <footer>
+        <h3><i class="fa-solid fa-gavel"></i> IPL Auction Arena</h3>
+        <p>Ultimate IPL Legends Auction Experience</p>
+        <p class="copyright">© 2026 IPL Auction Arena | Developed by Vishva</p>
+    </footer>
+
+    <script src="teams.js" defer></script>
+    <script>
+    // Statistics page specific code
+    const TEAM_FULL_NAMES = {
+        CSK: "Chennai Super Kings", MI: "Mumbai Indians",
+        RCB: "Royal Challengers Bengaluru", KKR: "Kolkata Knight Riders",
+        DC: "Delhi Capitals", RR: "Rajasthan Royals",
+        SRH: "Sunrisers Hyderabad", PBKS: "Punjab Kings",
+        LSG: "Lucknow Super Giants", GT: "Gujarat Titans"
+    };
+    const TEAM_COLORS = {
+        CSK: { bg: "#f9cd1b", text: "#1a1a1a" }, MI: { bg: "#004ba0", text: "#fff" },
+        RCB: { bg: "#c41e3a", text: "#fff" },     KKR: { bg: "#3a225d", text: "#fff" },
+        DC:  { bg: "#1a5fa8", text: "#fff" },     RR:  { bg: "#e91e8c", text: "#fff" },
+        SRH: { bg: "#f26522", text: "#fff" },     PBKS: { bg: "#aa1f26", text: "#fff" },
+        LSG: { bg: "#00a0e9", text: "#fff" },     GT:  { bg: "#1c3f6e", text: "#fff" }
+    };
+    const INITIAL_PURSE = 125;
+    const TOTAL_POOL = INITIAL_PURSE * 10;
+
+    function fmtCr(v) {
+        const n = parseFloat(v);
+        return isNaN(n) ? "—" : `₹${n % 1 === 0 ? n : n.toFixed(1)} Cr`;
+    }
+
+    // BugFix #12: Load total player count to calculate proper progress percentage
+    async function loadStats() {
+        const stateRaw  = localStorage.getItem("iplAuctionState");
+        const pursesRaw = localStorage.getItem("iplAuctionPurses");
+        const squadsRaw = localStorage.getItem("iplAuctionSquads");
+
+        const state  = stateRaw  ? JSON.parse(stateRaw)  : { soldPlayers: [], unsoldPlayers: [] };
+        const purses = pursesRaw ? JSON.parse(pursesRaw) : {};
+        const squads = squadsRaw ? JSON.parse(squadsRaw) : {};
+
+        const sold   = state.soldPlayers  || [];
+        const unsold = state.unsoldPlayers || [];
+
+        // Fetch actual total player count for progress bar
+        let totalPlayers = 100; // fallback
+        try {
+            const res = await fetch("data/players.json");
+            if (res.ok) {
+                const allPlayers = await res.json();
+                totalPlayers = allPlayers.length || 100;
+            }
+        } catch (e) { /* use fallback */ }
+
+        // Progress bar — BugFix #12: proper percentage relative to total players
+        const totalAuctioned = sold.length + unsold.length;
+        document.getElementById("overviewLabel").textContent =
+            `${totalAuctioned} / ${totalPlayers} players auctioned — ${sold.length} sold, ${unsold.length} unsold`;
+        const pct = totalPlayers ? Math.min(100, Math.round((totalAuctioned / totalPlayers) * 100)) : 0;
+        document.getElementById("overviewBar").style.width = pct + "%";
+
+        // Total spend
+        const totalSpend = sold.reduce((a, s) => a + s.price, 0);
+        document.getElementById("statTotalSpend").textContent = fmtCr(totalSpend.toFixed(1));
+        document.getElementById("statPoolPct").textContent =
+            totalSpend ? Math.round((totalSpend / TOTAL_POOL) * 100) + "%" : "0%";
+
+        // Highest bid
+        if (sold.length) {
+            const top = sold.reduce((a, b) => b.price > a.price ? b : a, sold[0]);
+            document.getElementById("statHighPlayer").textContent = top.player;
+            document.getElementById("statHighPrice").textContent  = fmtCr(top.price);
+            document.getElementById("statHighTeam").textContent   = top.team;
+        }
+
+        // Sold count
+        document.getElementById("statSold").textContent  = sold.length;
+        document.getElementById("statUnsold").textContent = unsold.length;
+        if (sold.length) {
+            const avg = sold.reduce((a, s) => a + s.price, 0) / sold.length;
+            document.getElementById("statAvgPrice").textContent = fmtCr(avg.toFixed(1));
+        }
+
+        // Most active (most players bought)
+        const teamCounts = {};
+        Object.keys(TEAM_FULL_NAMES).forEach(t => { teamCounts[t] = 0; });
+        sold.forEach(s => { teamCounts[s.team] = (teamCounts[s.team] || 0) + 1; });
+        const topTeam = Object.entries(teamCounts).sort((a,b) => b[1]-a[1])[0];
+        if (topTeam && topTeam[1] > 0) {
+            document.getElementById("statActiveTeam").textContent    = topTeam[0];
+            document.getElementById("statActivePlayers").textContent = topTeam[1];
+            const teamSpent = sold.filter(s => s.team === topTeam[0]).reduce((a, s) => a + s.price, 0);
+            document.getElementById("statActiveSpent").textContent   = fmtCr(teamSpent.toFixed(1));
+        }
+
+        // Spending grid
+        const spendingGrid = document.getElementById("spendingGrid");
+        spendingGrid.innerHTML = "";
+        const maxSpend = Math.max(...Object.keys(TEAM_FULL_NAMES).map(t => {
+            const p = purses[t] ?? INITIAL_PURSE;
+            return INITIAL_PURSE - p;
+        }), 1);
+
+        Object.keys(TEAM_FULL_NAMES).forEach(team => {
+            const purse    = purses[team] ?? INITIAL_PURSE;
+            const spent    = parseFloat((INITIAL_PURSE - purse).toFixed(1));
+            const spentPct = Math.round((spent / INITIAL_PURSE) * 100);
+            const barPct   = Math.round((spent / maxSpend) * 100);
+            const color    = TEAM_COLORS[team];
+            const squad    = squads[team] || [];
+
+            const card = document.createElement("div");
+            card.className = "spending-card";
+            card.innerHTML = `
+                <div class="spending-top">
+                    <span class="spending-badge" style="background:${color.bg};color:${color.text}">${team}</span>
+                    <span class="spending-players">${squad.length} players</span>
+                </div>
+                <div class="spending-bar-wrap">
+                    <div class="spending-bar" style="width:${barPct}%;background:${color.bg}"></div>
+                </div>
+                <div class="spending-footer">
+                    <span class="spending-amount">${fmtCr(spent)}</span>
+                    <span class="spending-pct">${spentPct}% used</span>
+                    <span class="spending-purse">Left: ${fmtCr(purse)}</span>
+                </div>`;
+            spendingGrid.appendChild(card);
+        });
+
+        // Rankings table
+        const tbody = document.getElementById("rankingsBody");
+        tbody.innerHTML = "";
+        const ranked = Object.keys(TEAM_FULL_NAMES).map(team => {
+            const purse = purses[team] ?? INITIAL_PURSE;
+            const squad = squads[team] || [];
+            const spent = parseFloat((INITIAL_PURSE - purse).toFixed(1));
+            const avg   = squad.length ? parseFloat((squad.reduce((a, p) => a + p.price, 0) / squad.length).toFixed(1)) : 0;
+            return { team, purse, squad, spent, avg };
+        }).sort((a, b) => b.squad.length - a.squad.length || a.spent - b.spent);
+
+        ranked.forEach((r, i) => {
+            const color = TEAM_COLORS[r.team];
+            const status = r.purse < 10 ? "⚠️ Low" : r.purse >= 80 ? "🟢 Rich" : "🔵 OK";
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td class="rank-num">${i + 1}</td>
+                <td><span class="rank-badge" style="background:${color.bg};color:${color.text}">${r.team}</span>
+                    <span class="rank-full">${TEAM_FULL_NAMES[r.team]}</span></td>
+                <td class="rank-val">${r.squad.length}</td>
+                <td class="rank-val" style="color:var(--accent2)">${fmtCr(r.spent)}</td>
+                <td class="rank-val" style="color:#00e676">${fmtCr(r.purse)}</td>
+                <td class="rank-val">${r.avg ? fmtCr(r.avg) : "—"}</td>
+                <td>${status}</td>`;
+            tbody.appendChild(row);
+        });
+
+        // Sales list
+        const salesList = document.getElementById("salesList");
+        salesList.innerHTML = "";
+        if (!sold.length) {
+            salesList.innerHTML = '<div class="no-data">No sales yet. Start the auction!</div>';
+            return;
+        }
+        [...sold].reverse().forEach((s, i) => {
+            const color = TEAM_COLORS[s.team];
+            const el = document.createElement("div");
+            el.className = "sale-row";
+            el.innerHTML = `
+                <span class="sale-num">${sold.length - i}</span>
+                <span class="sale-player">${s.player}</span>
+                <span class="sale-team-badge" style="background:${color.bg};color:${color.text}">${s.team}</span>
+                <span class="sale-price">${fmtCr(s.price)}</span>`;
+            salesList.appendChild(el);
+        });
+    }
+
+    loadStats();
+    </script>
+
+    <style>
+    /* Stats page extras */
+    .stats-overview {
+        margin: 0 5%;
+        margin-top: 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    .overview-bar-wrap {
+        height: 8px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 10px 10px 0 0;
+        overflow: hidden;
+    }
+    .overview-bar {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), var(--accent2));
+        width: 0%;
+        transition: width 1s ease;
+        border-radius: 10px;
+    }
+    .overview-label {
+        padding: 8px 16px;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        font-weight: 600;
+    }
+    .stats-section {
+        width: 90%;
+        max-width: 1400px;
+        margin: 32px auto;
+    }
+    .section-heading {
+        font-size: 1.1rem;
+        font-weight: 800;
+        color: var(--accent);
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+    }
+    .section-heading i { color: var(--accent2); margin-right: 8px; }
+
+    /* Spending grid */
+    .spending-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+    }
+    .spending-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .spending-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,200,255,0.1); }
+    .spending-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .spending-badge { padding: 3px 10px; border-radius: 20px; font-size: 0.72rem; font-weight: 800; }
+    .spending-players { font-size: 0.65rem; color: var(--text-dim); }
+    .spending-bar-wrap { height: 6px; background: rgba(255,255,255,0.07); border-radius: 6px; overflow: hidden; margin-bottom: 8px; }
+    .spending-bar { height: 100%; border-radius: 6px; transition: width 1s ease; opacity: 0.85; }
+    .spending-footer { display: flex; justify-content: space-between; font-size: 0.65rem; }
+    .spending-amount { font-weight: 800; color: var(--accent2); }
+    .spending-pct { color: var(--text-dim); }
+    .spending-purse { color: #00e676; }
+
+    /* Rankings table */
+    .rankings-table-wrap { overflow-x: auto; }
+    .rankings-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.82rem;
+    }
+    .rankings-table th {
+        padding: 10px 14px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        color: var(--text-dim);
+        font-weight: 700;
+        text-align: left;
+    }
+    .rankings-table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-card);
+    }
+    .rankings-table tbody tr:hover td { background: rgba(0,200,255,0.05); }
+    .rank-num { color: var(--text-dim); font-weight: 800; }
+    .rank-badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.68rem; font-weight: 800; }
+    .rank-full { font-size: 0.72rem; color: var(--text-dim); margin-left: 8px; }
+    .rank-val { font-weight: 700; }
+
+    /* Sales list */
+    .sales-list { display: flex; flex-direction: column; gap: 4px; max-height: 400px; overflow-y: auto; }
+    .sale-row {
+        display: grid;
+        grid-template-columns: 40px 1fr auto auto;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 14px;
+        background: var(--bg-card);
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        font-size: 0.82rem;
+        transition: background 0.2s;
+    }
+    .sale-row:hover { background: rgba(0,200,255,0.06); }
+    .sale-num { color: var(--text-dim); font-weight: 700; }
+    .sale-player { font-weight: 700; }
+    .sale-team-badge { padding: 2px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 800; }
+    .sale-price { color: var(--accent2); font-weight: 800; }
+    .no-data { text-align: center; color: var(--text-dim); padding: 30px; font-size: 0.85rem; }
+    </style>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IPL Auction Arena — Build your all-time IPL Legends squad in the ultimate auction simulator.">
+    <title>IPL Auction Arena — Home</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= NAVBAR ================= -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-gavel"></i> IPL Auction Arena
+            </a>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active" aria-current="page"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="auction.html"><i class="fa-solid fa-gavel"></i> Auction</a></li>
+                <li><a href="teams.html"><i class="fa-solid fa-users"></i> Teams</a></li>
+                <li><a href="statistics.html"><i class="fa-solid fa-chart-line"></i> Statistics</a></li>
+            </ul>
+
+            <button class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" aria-label="Hero">
+        <div class="hero-content">
+            <span class="hero-badge"><i class="fa-solid fa-star"></i> ULTIMATE AUCTION EXPERIENCE</span>
+            <h1>IPL AUCTION ARENA</h1>
+            <p>Build your dream IPL Legends squad and dominate the ultimate all-time auction experience.</p>
+            <div class="mode-selection">
+                <div class="mode-card" id="singlePlayerCard" onclick="localStorage.removeItem('roomCode');localStorage.removeItem('playerTeam');window.location.href='auction.html'">
+                    <div class="mode-icon"><i class="fa-solid fa-user"></i></div>
+                    <h3>Single Player</h3>
+                    <p>Play against AI-powered franchises. Full control over your bids.</p>
+                    <span class="mode-btn"><i class="fa-solid fa-play"></i> Play Solo</span>
+                </div>
+                <div class="mode-card" id="multiPlayerCard" onclick="window.location.href='multiplayer.html'">
+                    <div class="mode-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3>Multiplayer</h3>
+                    <p>Compete with friends in real-time. Create or join a room.</p>
+                    <span class="mode-btn mode-btn-alt"><i class="fa-solid fa-globe"></i> Play Online</span>
+                </div>
+            </div>
+            <div class="hero-buttons" style="margin-top: 20px;">
+                <a href="teams.html" class="btn secondary-btn"><i class="fa-solid fa-users"></i> View Teams</a>
+                <a href="statistics.html" class="btn secondary-btn"><i class="fa-solid fa-chart-line"></i> Statistics</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= QUICK STATS ================= -->
+    <section class="stats" aria-label="Auction overview">
+        <h2 class="section-title"><i class="fa-solid fa-trophy"></i> Auction Overview</h2>
+        <div class="stats-container">
+            <div class="stat-card"><i class="fa-solid fa-shield-halved card-icon"></i><h3>10</h3><p>IPL Teams</p></div>
+            <div class="stat-card"><i class="fa-solid fa-user-group card-icon"></i><h3>500+</h3><p>Legends Players</p></div>
+            <div class="stat-card"><i class="fa-solid fa-wallet card-icon"></i><h3>₹125 Cr</h3><p>Starting Purse</p></div>
+            <div class="stat-card"><i class="fa-solid fa-robot card-icon"></i><h3>AI</h3><p>Smart Bidding Teams</p></div>
+        </div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section class="features" aria-label="Features">
+        <h2 class="section-title"><i class="fa-solid fa-bolt"></i> Features</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <i class="fas fa-gavel" aria-hidden="true"></i>
+                <h3>Live Auction</h3>
+                <p>Realistic IPL auction experience with dynamic bidding.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-robot" aria-hidden="true"></i>
+                <h3>AI Teams</h3>
+                <p>Smart AI franchises compete for the best players.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line" aria-hidden="true"></i>
+                <h3>Analytics</h3>
+                <p>Detailed team spending and auction statistics.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-save" aria-hidden="true"></i>
+                <h3>Save Progress</h3>
+                <p>Resume your auction anytime with local storage.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= TEAMS PREVIEW ================= -->
+    <section class="teams-preview" aria-label="Participating teams">
+        <h2 class="section-title"><i class="fa-solid fa-shield"></i> Participating Teams</h2>
+        <div class="teams-grid">
+            <div class="team-box csk-box">CSK</div>
+            <div class="team-box mi-box">MI</div>
+            <div class="team-box rcb-box">RCB</div>
+            <div class="team-box kkr-box">KKR</div>
+            <div class="team-box srh-box">SRH</div>
+            <div class="team-box rr-box">RR</div>
+            <div class="team-box dc-box">DC</div>
+            <div class="team-box pbks-box">PBKS</div>
+            <div class="team-box lsg-box">LSG</div>
+            <div class="team-box gt-box">GT</div>
+        </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="cta" aria-label="Call to action">
+        <h2>Ready To Build The Greatest IPL Team Ever?</h2>
+        <p>Enter the auction arena and create your all-time IPL legends squad.</p>
+        <div class="hero-buttons">
+            <a href="auction.html" class="btn primary-btn" onclick="localStorage.removeItem('roomCode');localStorage.removeItem('playerTeam')"><i class="fa-solid fa-user"></i> Single Player</a>
+            <a href="multiplayer.html" class="btn secondary-btn"><i class="fa-solid fa-users"></i> Multiplayer</a>
+        </div>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <h3><i class="fa-solid fa-gavel"></i> IPL Auction Arena</h3>
+        <p>Ultimate All-Time IPL Legends Auction Simulator</p>
+        <p class="copyright">© 2026 IPL Auction Arena | Developed by Vishva</p>
+    </footer>
+
+    <script src="app.js" defer></script>
+</body>
+</html>

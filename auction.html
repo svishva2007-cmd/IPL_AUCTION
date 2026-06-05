@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Auction Arena — Auction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="auction.css">
+</head>
+<body>
+
+<div class="page-wrapper">
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-left">
+            <a href="index.html" class="header-logo-link">
+                <img src="IPL.jpg" alt="IPL" class="ipl-logo">
+            </a>
+        </div>
+        <div class="header-center">
+            <h1 class="site-title"><i class="fa-solid fa-gavel"></i> IPL AUCTION ARENA</h1>
+            <p class="site-tagline">BID. BUILD. BELIEVE.</p>
+        </div>
+        <div class="header-right">
+            <nav class="header-nav" id="headerNav">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="auction.html" class="active"><i class="fa-solid fa-gavel"></i> Auction</a>
+                <a href="teams.html"><i class="fa-solid fa-users"></i> Teams</a>
+                <a href="statistics.html"><i class="fa-solid fa-chart-line"></i> Stats</a>
+            </nav>
+            <button id="saveBtn" title="Save Auction"><i class="fa-solid fa-floppy-disk"></i></button>
+            <button id="resetBtn" title="Reset Auction"><i class="fa-solid fa-rotate"></i></button>
+            <button id="settingsBtn" title="Settings"><i class="fa-solid fa-gear"></i></button>
+            
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- AUCTION PROGRESS BAR -->
+    <div class="auction-progress-wrap">
+        <div class="auction-progress-bar" id="auctionProgressBar"></div>
+        <span class="auction-progress-label" id="auctionProgressLabel">Loading...</span>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div class="dashboard">
+
+        <!-- LEFT: TEAMS & PURSE -->
+        <aside class="left-panel">
+            <div class="panel-header"><i class="fa-solid fa-users"></i> TEAMS &amp; PURSE <span id="squadHint" class="squad-hint">dbl-click to view squad</span></div>
+            <div class="purse-list" id="purseList">
+                <div class="team-row" data-team="CSK">
+                    <div class="team-logo csk">CSK</div>
+                    <div class="team-info"><span class="team-abbr">CSK</span><span class="team-full">Chennai Super Kings</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="MI">
+                    <div class="team-logo mi">MI</div>
+                    <div class="team-info"><span class="team-abbr">MI</span><span class="team-full">Mumbai Indians</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="RCB">
+                    <div class="team-logo rcb">RCB</div>
+                    <div class="team-info"><span class="team-abbr">RCB</span><span class="team-full">Royal Challengers Bengaluru</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="KKR">
+                    <div class="team-logo kkr">KKR</div>
+                    <div class="team-info"><span class="team-abbr">KKR</span><span class="team-full">Kolkata Knight Riders</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="DC">
+                    <div class="team-logo dc">DC</div>
+                    <div class="team-info"><span class="team-abbr">DC</span><span class="team-full">Delhi Capitals</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="RR">
+                    <div class="team-logo rr">RR</div>
+                    <div class="team-info"><span class="team-abbr">RR</span><span class="team-full">Rajasthan Royals</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="SRH">
+                    <div class="team-logo srh">SRH</div>
+                    <div class="team-info"><span class="team-abbr">SRH</span><span class="team-full">Sunrisers Hyderabad</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="PBKS">
+                    <div class="team-logo pbks">PBKS</div>
+                    <div class="team-info"><span class="team-abbr">PBKS</span><span class="team-full">Punjab Kings</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="LSG">
+                    <div class="team-logo lsg">LSG</div>
+                    <div class="team-info"><span class="team-abbr">LSG</span><span class="team-full">Lucknow Super Giants</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+                <div class="team-row" data-team="GT">
+                    <div class="team-logo gt">GT</div>
+                    <div class="team-info"><span class="team-abbr">GT</span><span class="team-full">Gujarat Titans</span></div>
+                    <span class="team-purse-amt">₹125 Cr</span>
+                    <span class="team-count">0</span>
+                </div>
+            </div>
+            <div class="total-purse">
+                <i class="fa-solid fa-wallet"></i>
+                <div>
+                    <div class="total-label">TOTAL PURSE AVAILABLE</div>
+                    <div class="total-amount" id="totalPurse">₹1250 Cr</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CENTER: AUCTION ACTION -->
+        <main class="center-panel">
+
+            <div class="current-player-box">
+                <div class="cp-header">★ CURRENT PLAYER ★</div>
+                <div class="cp-body">
+                    <div class="cp-top-row">
+                        <div>
+                            <div class="cp-label">PLAYER NAME</div>
+                            <div class="cp-name" id="playerName">Loading...</div>
+                            <div class="cp-role">ROLE &nbsp;<span id="playerRole">—</span></div>
+                        </div>
+                        <div class="cp-nat-badge" id="playerNationality">India</div>
+                    </div>
+
+                    <div class="cp-stats-row">
+                        <div class="stat-box stat-base">
+                            <div class="stat-label">BASE PRICE</div>
+                            <div class="stat-value" id="basePrice">₹0 Cr</div>
+                        </div>
+                        <div class="stat-box stat-bid">
+                            <div class="stat-label">CURRENT BID</div>
+                            <div class="stat-value bid-highlight" id="currentBid">₹0 Cr</div>
+                        </div>
+                        <div class="stat-box stat-bidder">
+                            <div class="stat-label">HIGHEST BIDDER</div>
+                            <div class="stat-value" id="highestBidder">None</div>
+                            <div class="bidder-full" id="highestBidderFull"></div>
+                        </div>
+                    </div>
+
+                    <div class="cp-metrics-row">
+                        <div class="metric">
+                            <span class="metric-label">OVERALL RATING</span>
+                            <span class="metric-val" id="playerRating">—</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">MATCHES</span>
+                            <span class="metric-val" id="playerMatches">—</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">RUNS</span>
+                            <span class="metric-val" id="playerRuns">—</span>
+                        </div>
+                        <div class="metric">
+                            <span class="metric-label">WICKETS</span>
+                            <span class="metric-val" id="playerWickets">—</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bid-section">
+                <div class="bid-section-header"><i class="fa-solid fa-hand-pointer"></i> PLACE YOUR BID <i class="fa-solid fa-hand-pointer fa-flip-horizontal"></i></div>
+                <div class="bid-grid">
+                    <button class="bid-btn" data-team="CSK"><span class="btn-abbr">CSK</span><span class="btn-full">Chennai Super Kings</span></button>
+                    <button class="bid-btn" data-team="MI"><span class="btn-abbr">MI</span><span class="btn-full">Mumbai Indians</span></button>
+                    <button class="bid-btn" data-team="RCB"><span class="btn-abbr">RCB</span><span class="btn-full">Royal Challengers Bengaluru</span></button>
+                    <button class="bid-btn" data-team="KKR"><span class="btn-abbr">KKR</span><span class="btn-full">Kolkata Knight Riders</span></button>
+                    <button class="bid-btn" data-team="DC"><span class="btn-abbr">DC</span><span class="btn-full">Delhi Capitals</span></button>
+                    <button class="bid-btn" data-team="RR"><span class="btn-abbr">RR</span><span class="btn-full">Rajasthan Royals</span></button>
+                    <button class="bid-btn" data-team="SRH"><span class="btn-abbr">SRH</span><span class="btn-full">Sunrisers Hyderabad</span></button>
+                    <button class="bid-btn" data-team="PBKS"><span class="btn-abbr">PBKS</span><span class="btn-full">Punjab Kings</span></button>
+                    <button class="bid-btn" data-team="LSG"><span class="btn-abbr">LSG</span><span class="btn-full">Lucknow Super Giants</span></button>
+                    <button class="bid-btn" data-team="GT"><span class="btn-abbr">GT</span><span class="btn-full">Gujarat Titans</span></button>
+                </div>
+            </div>
+
+            <div class="bottom-center">
+                <div class="timer-wrap">
+                    <div class="timer-label">AUCTION TIMER</div>
+                    <div class="timer-display" id="auctionTimer">00:10</div>
+                    <div class="timer-bar-wrap"><div class="timer-bar" id="timerBar"></div></div>
+                </div>
+                <div id="soldBanner"></div>
+                <div class="auction-controls">
+                    <button id="nextPlayerBtn">
+                        Next Player
+                    </button>
+
+                    <button id="pauseBtn" class="control-btn pause-btn">
+                        <i class="fa-solid fa-pause"></i>
+                        Pause
+                    </button>
+
+                </div>
+            </div>
+
+        </main>
+
+        <!-- RIGHT: SEARCH + UPCOMING + HISTORY -->
+        <aside class="right-panel">
+            <!-- Search & Filter -->
+            <div class="search-filter-bar">
+                <input type="text" id="playerSearch" placeholder="🔍 Search player..." class="search-input">
+                <select id="roleFilter" class="role-select">
+                    <option value="ALL">All Roles</option>
+                    <option value="Batsman">Batters</option>
+                    <option value="Bowler">Bowlers</option>
+                    <option value="All-Rounder">All-Rounders</option>
+                    <option value="Wicket">Keepers</option>
+                </select>
+            </div>
+
+            <div class="panel-header"><i class="fa-solid fa-list-ol"></i> UPCOMING PLAYERS</div>
+            <div class="upcoming-list" id="upcomingPlayers"></div>
+
+            <div class="panel-header" style="margin-top:0"><i class="fa-solid fa-clock-rotate-left"></i> BID HISTORY</div>
+            <div class="history-scroll" id="historyBox"></div>
+            <button class="view-history-btn">VIEW FULL HISTORY &nbsp;→</button>
+        </aside>
+
+    </div>
+
+</div>
+
+<!-- ═══════════════════════════════════════
+     SQUAD MODAL (Phase 2.6)
+════════════════════════════════════════ -->
+<div class="squad-modal" id="squadModal">
+    <div class="squad-modal-box">
+        <div class="squad-modal-header">
+            <div class="squad-modal-title">
+                <span class="modal-team-badge" id="modalTeamCode">CSK</span>
+                <h2 id="modalTeamName">Chennai Super Kings</h2>
+            </div>
+            <div class="squad-modal-actions">
+                <button id="modalPrint" title="Export / Print"><i class="fa-solid fa-print"></i></button>
+                <button id="modalClose"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="modal-stats-grid">
+            <div class="modal-stat"><div class="modal-stat-val" id="modalPurse">—</div><div class="modal-stat-label">PURSE LEFT</div></div>
+            <div class="modal-stat"><div class="modal-stat-val" id="modalSpent">—</div><div class="modal-stat-label">SPENT</div></div>
+            <div class="modal-stat"><div class="modal-stat-val" id="modalPlayers">—</div><div class="modal-stat-label">PLAYERS</div></div>
+            <div class="modal-stat"><div class="modal-stat-val" id="modalOverseas">—</div><div class="modal-stat-label">OVERSEAS</div></div>
+            <div class="modal-stat"><div class="modal-stat-val" id="modalRating">—</div><div class="modal-stat-label">AVG RATING</div></div>
+        </div>
+
+        <!-- Role breakdown -->
+        <div class="modal-role-row">
+            <div class="role-chip bat"><i class="fa-solid fa-cricket-bat-ball"></i> BAT <span id="modalBatters">0</span></div>
+            <div class="role-chip bowl"><i class="fa-solid fa-baseball"></i> BOWL <span id="modalBowlers">0</span></div>
+            <div class="role-chip ar"><i class="fa-solid fa-star"></i> AR <span id="modalAllRounders">0</span></div>
+            <div class="role-chip wk"><i class="fa-solid fa-shield"></i> WK <span id="modalKeepers">0</span></div>
+        </div>
+
+        <!-- Squad Table -->
+        <div class="squad-table-wrap">
+            <table class="squad-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>PLAYER</th>
+                        <th>ROLE</th>
+                        <th>PRICE</th>
+                    </tr>
+                </thead>
+                <tbody id="modalSquadBody"></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SETTINGS PANEL (Phase 4)
+════════════════════════════════════════ -->
+<div class="settings-panel" id="settingsPanel">
+    <div class="settings-box">
+        <div class="settings-header">
+            <h3><i class="fa-solid fa-gear"></i> AUCTION SETTINGS</h3>
+            <button id="settingsClose"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="settings-body">
+            <div class="setting-row">
+                <label>Timer Duration (seconds)</label>
+                <input type="number" id="setTimer" min="5" max="60" value="10">
+            </div>
+            <div class="setting-row">
+                <label>Starting Purse (₹ Cr)</label>
+                <input type="number" id="setPurse" min="50" max="500" value="125">
+            </div>
+            <div class="setting-row">
+                <label>Bid Increment (₹ Cr)</label>
+                <input type="number" id="setBid" min="0.1" max="5" step="0.1" value="0.5">
+            </div>
+            <p class="settings-note"><i class="fa-solid fa-circle-info"></i> Settings apply on next reload. Current auction won't be affected.</p>
+        </div>
+        <div class="settings-footer">
+            <button id="settingsSave" class="settings-save-btn"><i class="fa-solid fa-check"></i> Save Settings</button>
+        </div>
+    </div>
+</div>
+
+<!-- AUCTION END SCREEN -->
+<div class="auction-end-screen" id="auctionEndScreen" style="display:none"></div>
+
+<script src="auction.js" defer></script>
+<script type="module" src="multiplayer-auction.js"></script>
+</body>
+</html>

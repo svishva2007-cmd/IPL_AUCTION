@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IPL Auction Arena — Browse all 10 IPL franchises and manage your squad.">
+    <title>IPL Auction Arena — Teams</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="teams.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-gavel"></i> IPL Auction Arena
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="auction.html"><i class="fa-solid fa-gavel"></i> Auction</a></li>
+                <li><a href="teams.html" class="active" aria-current="page"><i class="fa-solid fa-users"></i> Teams</a></li>
+                <li><a href="statistics.html"><i class="fa-solid fa-chart-line"></i> Statistics</a></li>
+            </ul>
+            <button class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <span class="page-badge"><i class="fa-solid fa-shield-halved"></i> 10 FRANCHISES</span>
+        <h1>IPL FRANCHISES</h1>
+        <p>Select a team and build the ultimate IPL Legends squad.</p>
+    </section>
+
+    <!-- TEAMS -->
+    <main class="teams-container">
+
+        <article class="team-card" data-team="csk">
+            <div class="team-card-logo csk-logo">CSK</div>
+            <h2>Chennai Super Kings</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="mi">
+            <div class="team-card-logo mi-logo">MI</div>
+            <h2>Mumbai Indians</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="rcb">
+            <div class="team-card-logo rcb-logo">RCB</div>
+            <h2>Royal Challengers Bengaluru</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="kkr">
+            <div class="team-card-logo kkr-logo">KKR</div>
+            <h2>Kolkata Knight Riders</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="srh">
+            <div class="team-card-logo srh-logo">SRH</div>
+            <h2>Sunrisers Hyderabad</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="rr">
+            <div class="team-card-logo rr-logo">RR</div>
+            <h2>Rajasthan Royals</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="dc">
+            <div class="team-card-logo dc-logo">DC</div>
+            <h2>Delhi Capitals</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="pbks">
+            <div class="team-card-logo pbks-logo">PBKS</div>
+            <h2>Punjab Kings</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="lsg">
+            <div class="team-card-logo lsg-logo">LSG</div>
+            <h2>Lucknow Super Giants</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+        <article class="team-card" data-team="gt">
+            <div class="team-card-logo gt-logo">GT</div>
+            <h2>Gujarat Titans</h2>
+            <div class="team-info">
+                <p><i class="fa-solid fa-wallet"></i> <strong>Purse:</strong> <span class="info-val">₹125 Cr</span></p>
+                <p><i class="fa-solid fa-user"></i> <strong>Players:</strong> <span class="info-val">0</span></p>
+                <p><i class="fa-solid fa-plane"></i> <strong>Overseas:</strong> <span class="info-val">0/8</span></p>
+            </div>
+            <button class="team-btn" type="button"><i class="fa-solid fa-eye"></i> View Squad</button>
+        </article>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <h3><i class="fa-solid fa-gavel"></i> IPL Auction Arena</h3>
+        <p>Ultimate IPL Legends Auction Experience</p>
+        <p class="copyright">© 2026 IPL Auction Arena | Developed by Vishva</p>
+    </footer>
+
+    <script src="teams.js" defer></script>
+</body>
+</html>

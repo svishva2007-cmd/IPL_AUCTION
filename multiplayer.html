@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="IPL Auction Arena — Multiplayer Lobby. Create or join a room to compete in the ultimate IPL auction experience.">
+    <title>IPL Auction Arena — Multiplayer Lobby</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── Multiplayer Lobby Styles ── */
+        .lobby-wrapper {
+            min-height: 100vh;
+            padding-top: 100px;
+            padding-bottom: 60px;
+            background:
+                linear-gradient(rgba(10,14,42,0.9), rgba(6,9,24,0.95)),
+                radial-gradient(ellipse at top, rgba(0,200,255,0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(240,180,41,0.08) 0%, transparent 50%),
+                var(--bg-dark);
+        }
+
+        .lobby-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeUp 0.7s ease both;
+        }
+        .lobby-header .page-badge {
+            display: inline-block;
+            padding: 6px 18px;
+            background: rgba(0,200,255,0.12);
+            border: 1px solid var(--border-bright);
+            border-radius: 50px;
+            color: var(--accent);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+        }
+        .lobby-header .page-badge i { color: var(--accent2); margin-right: 6px; }
+        .lobby-header h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 900;
+            color: var(--text);
+            text-shadow: 0 0 20px var(--accent-glow);
+            letter-spacing: 2px;
+        }
+        .lobby-header p {
+            color: var(--text-dim);
+            margin-top: 8px;
+            font-size: 0.95rem;
+        }
+
+        .lobby-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 5%;
+        }
+
+        .lobby-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-card);
+            padding: 30px;
+            transition: all 0.3s ease;
+            animation: fadeUp 0.7s ease both;
+        }
+        .lobby-card:nth-child(1) { animation-delay: 0.1s; }
+        .lobby-card:nth-child(2) { animation-delay: 0.2s; }
+        .lobby-card:nth-child(3) { animation-delay: 0.3s; }
+        .lobby-card:nth-child(4) { animation-delay: 0.4s; }
+
+        .lobby-card:hover {
+            border-color: var(--border-bright);
+            box-shadow: 0 8px 30px rgba(0,200,255,0.1);
+            transform: translateY(-3px);
+        }
+
+        .lobby-card h2 {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lobby-card h2 i { color: var(--accent2); font-size: 0.9rem; }
+
+        .lobby-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            outline: none;
+            transition: border-color 0.3s;
+            margin-bottom: 12px;
+        }
+        .lobby-input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow-soft);
+        }
+        .lobby-input::placeholder { color: var(--text-dim); }
+
+        .lobby-btn {
+            width: 100%;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+        .lobby-btn-primary {
+            background: linear-gradient(135deg, var(--accent), #0088cc);
+            color: #000;
+            box-shadow: 0 0 14px var(--accent-glow-soft);
+        }
+        .lobby-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px var(--accent-glow);
+        }
+        .lobby-btn-secondary {
+            background: linear-gradient(135deg, var(--accent2), #b8860b);
+            color: #000;
+            box-shadow: 0 0 14px rgba(240,180,41,0.2);
+        }
+        .lobby-btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(240,180,41,0.3);
+        }
+        .lobby-btn-success {
+            background: linear-gradient(135deg, var(--green), #00a854);
+            color: #000;
+            box-shadow: 0 0 14px var(--green-glow);
+        }
+        .lobby-btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px var(--green-glow);
+        }
+        .lobby-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        #roomDisplay {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-top: 10px;
+            min-height: 28px;
+        }
+
+        .lobby-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .lobby-list li {
+            padding: 8px 14px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .lobby-list li::before {
+            content: '●';
+            color: var(--green);
+            font-size: 0.5rem;
+        }
+
+        .lobby-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            outline: none;
+            margin-bottom: 12px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300c8ff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        .lobby-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow-soft);
+        }
+        .lobby-select option {
+            background: var(--bg-panel);
+            color: var(--text);
+        }
+
+        #hostStatus {
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 12px;
+            min-height: 24px;
+        }
+
+        .lobby-back {
+            text-align: center;
+            margin-top: 30px;
+            animation: fadeUp 0.7s 0.5s ease both;
+        }
+        .lobby-back a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        .lobby-back a:hover { color: var(--accent); }
+        .lobby-back a i { margin-right: 6px; }
+
+        @media (max-width: 700px) {
+            .lobby-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header>
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
+            <a href="index.html" class="logo"><i class="fa-solid fa-gavel"></i> IPL Auction Arena</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
+                <li><a href="auction.html"><i class="fa-solid fa-gavel"></i> Auction</a></li>
+                <li><a href="teams.html"><i class="fa-solid fa-users"></i> Teams</a></li>
+                <li><a href="statistics.html"><i class="fa-solid fa-chart-line"></i> Statistics</a></li>
+            </ul>
+            <button class="menu-btn" aria-label="Toggle navigation menu" aria-expanded="false">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <div class="lobby-wrapper">
+        <div class="lobby-header">
+            <span class="page-badge"><i class="fa-solid fa-users"></i> MULTIPLAYER MODE</span>
+            <h1>🏏 MULTIPLAYER LOBBY</h1>
+            <p>Create or join a room to compete with friends in the ultimate IPL auction.</p>
+        </div>
+
+        <div class="lobby-grid">
+            <!-- CARD 1: Identity & Room Creation -->
+            <div class="lobby-card">
+                <h2><i class="fa-solid fa-user"></i> YOUR IDENTITY</h2>
+                <input type="text" id="playerName" placeholder="Enter Your Name" class="lobby-input">
+                <button id="createRoomBtn" class="lobby-btn lobby-btn-primary">
+                    <i class="fa-solid fa-plus"></i> Create Room
+                </button>
+                <div style="height:14px"></div>
+                <input id="roomCodeInput" placeholder="Enter Room Code" class="lobby-input">
+                <button id="joinRoomBtn" class="lobby-btn lobby-btn-secondary">
+                    <i class="fa-solid fa-right-to-bracket"></i> Join Room
+                </button>
+                <div id="roomDisplay"></div>
+            </div>
+
+            <!-- CARD 2: Players In Room -->
+            <div class="lobby-card">
+                <h2><i class="fa-solid fa-users-line"></i> PLAYERS IN ROOM</h2>
+                <ul id="playersList" class="lobby-list"></ul>
+            </div>
+
+            <!-- CARD 3: Team Selection -->
+            <div class="lobby-card">
+                <h2><i class="fa-solid fa-shield-halved"></i> SELECT YOUR TEAM</h2>
+                <select id="teamSelect" class="lobby-select">
+                    <option value="">Choose Team</option>
+                    <option value="CSK">CSK — Chennai Super Kings</option>
+                    <option value="MI">MI — Mumbai Indians</option>
+                    <option value="RCB">RCB — Royal Challengers Bengaluru</option>
+                    <option value="KKR">KKR — Kolkata Knight Riders</option>
+                    <option value="SRH">SRH — Sunrisers Hyderabad</option>
+                    <option value="DC">DC — Delhi Capitals</option>
+                    <option value="PBKS">PBKS — Punjab Kings</option>
+                    <option value="RR">RR — Rajasthan Royals</option>
+                    <option value="GT">GT — Gujarat Titans</option>
+                    <option value="LSG">LSG — Lucknow Super Giants</option>
+                </select>
+                <button id="selectTeamBtn" class="lobby-btn lobby-btn-primary">
+                    <i class="fa-solid fa-check"></i> Select Team
+                </button>
+                <h2 style="margin-top: 18px;"><i class="fa-solid fa-list"></i> TEAM OWNERS</h2>
+                <ul id="teamsList" class="lobby-list"></ul>
+            </div>
+
+            <!-- CARD 4: Host Controls -->
+            <div class="lobby-card">
+                <h2><i class="fa-solid fa-crown"></i> HOST CONTROLS</h2>
+                <div id="hostStatus"></div>
+                <button id="startAuctionBtn" class="lobby-btn lobby-btn-success" style="display:none;">
+                    <i class="fa-solid fa-rocket"></i> Start Auction
+                </button>
+            </div>
+        </div>
+
+        <div class="lobby-back">
+            <a href="index.html"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </div>
+
+    <footer>
+        <h3><i class="fa-solid fa-gavel"></i> IPL Auction Arena</h3>
+        <p>Ultimate IPL Legends Auction Experience</p>
+        <p class="copyright">© 2026 IPL Auction Arena | Developed by Vishva</p>
+    </footer>
+
+    <script src="app.js" defer></script>
+    <!-- BugFix #11: Script moved to end of body so all DOM elements exist when it runs -->
+    <script type="module" src="multiplayer.js"></script>
+</body>
+</html>
