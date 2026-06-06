@@ -151,7 +151,7 @@ function renderFilteredList() {
 // ── LOAD PLAYERS ────────────────────────────────────────
 async function loadPlayers() {
     try {
-        const res = await fetch("data/players.json");
+        const res = await fetch("players.json");
         if (!res.ok) throw new Error("fetch failed");
         allPlayers = await res.json();
         players = [...allPlayers];
