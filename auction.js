@@ -151,12 +151,19 @@ function renderFilteredList() {
 // ── LOAD PLAYERS ────────────────────────────────────────
 async function loadPlayers() {
     try {
-        const res = await fetch("players.json");
+        const res = await fetch("data/players.json");
         if (!res.ok) throw new Error("fetch failed");
         allPlayers = await res.json();
         players = [...allPlayers];
-        loadAuctionState();
-        players = players.filter(p => !soldPlayers.some(s => s.player === p.name) && !unsoldPlayers.includes(p.name));
+
+        // In multiplayer, DON'T load local auction state or filter players.
+        // The currentPlayerIndex comes from Firestore and indexes into the FULL
+        // unfiltered array (same order on all clients via shared playerOrder).
+        const isMultiplayer = !!localStorage.getItem("roomCode");
+        if (!isMultiplayer) {
+            loadAuctionState();
+            players = players.filter(p => !soldPlayers.some(s => s.player === p.name) && !unsoldPlayers.includes(p.name));
+        }
         // Re-expose after populating so multiplayer module gets the actual data
         window.allPlayers = allPlayers;
         window.players = players;
