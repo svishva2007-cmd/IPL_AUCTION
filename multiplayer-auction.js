@@ -35,6 +35,9 @@ let pendingUpdate   = false;      // debounce flag for rapid Firestore writes
 // Track whether this player's team is the current highest bidder (for bid-blocking)
 let myBidBlocked    = false;
 
+// Shared player order — all clients use this to index players identically
+let sharedPlayerOrder = null;     // array of player IDs from Firestore
+
 // ─────────────────────────────────────────────────────────────
 // STEP 1 — Identify host and configure UI restrictions
 // ─────────────────────────────────────────────────────────────
@@ -57,6 +60,12 @@ async function initMultiplayer() {
 
     // Always wait for auction.js to finish loading player data
     await waitForPlayers();
+
+    // Apply shared player order from Firestore (may have been missed if snapshot
+    // fired before loadPlayers finished — especially for non-host clients)
+    if (room.playerOrder && room.playerOrder.length > 0) {
+        applySharedPlayerOrder(room.playerOrder);
+    }
 
     // Always cache the players list so hostSellPlayer/hostMarkUnsold can use it
     window.mpPlayers = window.players || window.allPlayers || [];
@@ -204,6 +213,12 @@ async function shufflePlayersOnStart(room) {
     // Only shuffle if auction just started (player index is 0 and no sold players yet)
     if ((room.currentPlayerIndex || 0) > 0) return;
 
+    // If Firestore already has a playerOrder, don't re-shuffle (another host tab may have done it)
+    if (room.playerOrder && room.playerOrder.length > 0) {
+        applySharedPlayerOrder(room.playerOrder);
+        return;
+    }
+
     const allPlayers = window.allPlayers;
     if (!allPlayers || allPlayers.length === 0) return;
 
@@ -214,15 +229,40 @@ async function shufflePlayersOnStart(room) {
         [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
 
-    // Replace the players array in auction.js
-    window.allPlayers = shuffled;
-    // Also update the local working copy used by auction.js
+    // Save the shuffled order (as player IDs) to Firestore so ALL clients use the same order
+    const orderIds = shuffled.map(p => p.id);
+    await safeUpdate({ playerOrder: orderIds });
+
+    // Apply locally too
+    applySharedPlayerOrder(orderIds);
+}
+
+// Apply the shared player order from Firestore to local arrays
+function applySharedPlayerOrder(orderIds) {
+    if (!orderIds || orderIds.length === 0) return;
+
+    const allPlayers = window.allPlayers;
+    if (!allPlayers || allPlayers.length === 0) return;
+
+    // Build a lookup map: id -> player object
+    const idMap = {};
+    allPlayers.forEach(p => { idMap[p.id] = p; });
+
+    // Rebuild the array in the shared order
+    const reordered = orderIds.map(id => idMap[id]).filter(Boolean);
+
+    // Replace the players arrays in auction.js
+    window.allPlayers = reordered;
     if (window.players) {
         window.players.length = 0;
-        shuffled.forEach(p => window.players.push(p));
+        reordered.forEach(p => window.players.push(p));
     }
 
-    // Re-display the first player
+    sharedPlayerOrder = orderIds;
+
+    console.log("[MP] Applied shared player order. First player:", reordered[0]?.name);
+
+    // Re-display the current player
     if (typeof window.displayPlayer === "function") {
         window.displayPlayer();
     }
@@ -273,6 +313,10 @@ function listenToRoom() {
             room.currentPlayerIndex
         );
 
+        // Sync the shared player order BEFORE syncing the player index
+        // This ensures all clients have the same array before displayPlayer() runs
+        syncPlayerOrder(room);
+
         window.currentPlayerIndex =
             room.currentPlayerIndex || 0;
 
@@ -287,6 +331,22 @@ function listenToRoom() {
         syncTeamData(room);
         syncPauseState(room);
     });
+}
+
+// ── 3x. PLAYER ORDER SYNC ───────────────────────────────────
+function syncPlayerOrder(room) {
+    const order = room.playerOrder;
+    if (!order || order.length === 0) return;
+
+    // Only re-apply if order has changed (compare first+last IDs for speed)
+    if (sharedPlayerOrder
+        && sharedPlayerOrder.length === order.length
+        && sharedPlayerOrder[0] === order[0]
+        && sharedPlayerOrder[sharedPlayerOrder.length - 1] === order[order.length - 1]) {
+        return; // Already applied
+    }
+
+    applySharedPlayerOrder(order);
 }
 
 // ── 3a. TIMER SYNC (Day 1) ───────────────────────────────────
