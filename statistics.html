@@ -188,7 +188,7 @@
         // Fetch actual total player count for progress bar
         let totalPlayers = 100; // fallback
         try {
-            const res = await fetch("data/players.json");
+            const res = await fetch("players.json");
             if (res.ok) {
                 allPlayersData = await res.json();
                 totalPlayers = allPlayersData.length || 100;
