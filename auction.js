@@ -151,7 +151,7 @@ function renderFilteredList() {
 // ── LOAD PLAYERS ────────────────────────────────────────
 async function loadPlayers() {
     try {
-        const res = await fetch("players.json");
+        const res = await fetch("data/players.json");
         if (!res.ok) throw new Error("fetch failed");
         allPlayers = await res.json();
         players = [...allPlayers];
@@ -186,30 +186,44 @@ async function loadPlayers() {
 // ── DISPLAY PLAYER ──────────────────────────────────────
 function displayPlayer() {
 
+    const isMultiplayer = !!localStorage.getItem("roomCode");
+
     // BugFix #6: Only sync from window.currentPlayerIndex in multiplayer mode
-    if (localStorage.getItem("roomCode")) {
-        currentPlayerIndex = window.currentPlayerIndex || 0;
+    if (isMultiplayer) {
+        currentPlayerIndex = window.currentPlayerIndex ?? 0;
     }
 
     const player =
         players[currentPlayerIndex];
     if (!player) { endAuction(); return; }
 
-    currentBid    = player.basePrice;
-    highestBidder = "None";
+    // BugFix MP-1+4: In multiplayer, bid/bidder come from Firestore via syncBid/syncHighestBidder.
+    // Do NOT reset them here — that wipes out live bid data on every snapshot.
+    if (!isMultiplayer) {
+        currentBid    = player.basePrice;
+        highestBidder = "None";
+    } else {
+        // Read from window globals (set by Firestore sync)
+        currentBid    = window.currentBid ?? player.basePrice;
+        highestBidder = window.highestBidder || "None";
+    }
 
     document.getElementById("playerName").textContent        = player.name;
     document.getElementById("playerRole").textContent        = player.role;
     document.getElementById("basePrice").textContent         = formatCr(player.basePrice);
     document.getElementById("currentBid").textContent        = formatCr(currentBid);
-    document.getElementById("highestBidder").textContent     = "None";
-    document.getElementById("highestBidderFull").textContent = "";
+    document.getElementById("highestBidder").textContent     = highestBidder;
+    document.getElementById("highestBidderFull").textContent = highestBidder !== "None" ? (TEAM_FULL_NAMES[highestBidder] || "") : "";
     document.getElementById("playerRating").textContent      = player.overallRating ?? "—";
     document.getElementById("playerMatches").textContent     = player.matches ?? "—";
     document.getElementById("playerRuns").textContent        = player.runs ?? "—";
     document.getElementById("playerWickets").textContent     = player.wickets ?? "—";
-    document.getElementById("soldBanner").textContent        = "";
-    document.getElementById("soldBanner").className          = "";
+
+    // BugFix MP-7: In multiplayer, don't clear the sold banner here — syncSoldUnsold handles it
+    if (!isMultiplayer) {
+        document.getElementById("soldBanner").textContent        = "";
+        document.getElementById("soldBanner").className          = "";
+    }
 
     const natBadge = document.getElementById("playerNationality");
     if (natBadge) natBadge.textContent = player.nationality || "India";
@@ -463,6 +477,7 @@ function persistAll() {
     localStorage.setItem(PURSES_KEY, JSON.stringify(teamPurses));
     localStorage.setItem(STATS_KEY,  JSON.stringify(buildStats()));
 }
+window.persistAll = persistAll;   // BugFix MP-8: Expose for multiplayer-auction.js monkey-patch
 
 setInterval(() => { if (!auctionEnded) persistAll(); }, 30000);
 
@@ -692,6 +707,7 @@ document.querySelector(".purse-list")?.addEventListener("mouseover", () => {
 // ── AUCTION END ──────────────────────────────────────────
 function endAuction() {
     auctionEnded = true;
+    window.auctionEnded = true;   // BugFix MP-10: Expose to multiplayer module
     clearInterval(timerInterval);
     persistAll();
 

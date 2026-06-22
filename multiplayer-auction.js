@@ -260,6 +260,9 @@ function applySharedPlayerOrder(orderIds) {
 
     sharedPlayerOrder = orderIds;
 
+    // BugFix MP-12: Keep mpPlayers in sync after reorder so hostSellPlayer uses correct array
+    window.mpPlayers = window.players || window.allPlayers || [];
+
     console.log("[MP] Applied shared player order. First player:", reordered[0]?.name);
 
     // Re-display the current player
@@ -317,12 +320,10 @@ function listenToRoom() {
         // This ensures all clients have the same array before displayPlayer() runs
         syncPlayerOrder(room);
 
-        window.currentPlayerIndex =
-            room.currentPlayerIndex || 0;
-
-        if (typeof window.displayPlayer === "function") {
-            window.displayPlayer();
-        }
+        // BugFix MP-2+3: Do NOT write window.currentPlayerIndex here or call
+        // displayPlayer() unconditionally. Let syncPlayerIndex() handle it
+        // only when the index actually changes, avoiding double renders
+        // and preventing bid/bidder data from being wiped.
         syncTimer(room);
         syncPlayerIndex(room);
         syncBid(room);
@@ -369,7 +370,9 @@ function syncTimer(room) {
 // ── 3b. CURRENT PLAYER SYNC (Day 2) ─────────────────────────
 function syncPlayerIndex(room) {
     const newIdx = room.currentPlayerIndex ?? 0;
-    if (newIdx !== window.currentPlayerIndex) {
+    // BugFix MP-3: Compare against current value — now works correctly because
+    // listenToRoom() no longer prematurely writes window.currentPlayerIndex
+    if (newIdx !== (window.currentPlayerIndex ?? -1)) {
         window.currentPlayerIndex = newIdx;
         if (typeof window.displayPlayer === "function") {
             window.displayPlayer();
@@ -411,12 +414,17 @@ function syncHighestBidder(room) {
 }
 
 // ── 3e. SOLD / UNSOLD SYNC (Day 2) ──────────────────────────
+let soldBannerClearTimer = null;   // BugFix MP-7/11: Track banner auto-clear timer
+
 function syncSoldUnsold(room) {
     const banner = document.getElementById("soldBanner");
     if (!banner) return;
 
     const status = room.lastPlayerStatus || "";   // "sold:CSK:5.5" | "unsold" | ""
     if (!status) { banner.textContent = ""; banner.className = ""; return; }
+
+    // Clear any pending auto-clear timer
+    if (soldBannerClearTimer) clearTimeout(soldBannerClearTimer);
 
     if (status.startsWith("sold:")) {
         const [, team, price] = status.split(":");
@@ -426,6 +434,12 @@ function syncSoldUnsold(room) {
         banner.textContent = `❌ UNSOLD`;
         banner.style.color = "#ff4444";
     }
+
+    // BugFix MP-7/11: Auto-clear the banner after 2.5 seconds
+    soldBannerClearTimer = setTimeout(() => {
+        banner.textContent = "";
+        banner.className = "";
+    }, 2500);
 }
 
 // ── 3f. TEAM DATA SYNC (Day 3) ───────────────────────────────
@@ -587,7 +601,7 @@ async function hostSellPlayer(team) {
     clearInterval(hostTimerInterval);
 
     const players = window.mpPlayers || [];
-    const idx = window.currentPlayerIndex || 0;
+    const idx = window.currentPlayerIndex ?? 0;   // BugFix MP-5: Use ?? for index-0 safety
     const player = players[idx];
 
     if (!player) return;
@@ -644,6 +658,12 @@ async function hostSellPlayer(team) {
         teamSquads: squads
 
     });
+
+    // BugFix MP-7/11: Clear lastPlayerStatus after a delay so the banner doesn't persist
+    setTimeout(async () => {
+        await safeUpdate({ lastPlayerStatus: "" });
+    }, 2000);
+
     console.log("safeUpdate completed");
     console.log("SOLD");
     console.log("Current Index:", idx);
@@ -670,7 +690,7 @@ async function hostMarkUnsold() {
     clearInterval(hostTimerInterval);
 
     const players = window.mpPlayers || [];
-    const idx     = window.currentPlayerIndex || 0;
+    const idx     = window.currentPlayerIndex ?? 0;   // BugFix MP-5: Use ?? for index-0 safety
     const nextIdx = idx + 1;
     console.log("UNSOLD");
     console.log("Current Index:", idx);
@@ -683,6 +703,11 @@ async function hostMarkUnsold() {
         isPaused:           false,
         lastPlayerStatus:   "unsold"
     });
+
+    // BugFix MP-7/11: Clear lastPlayerStatus after a delay so the banner doesn't persist
+    setTimeout(async () => {
+        await safeUpdate({ lastPlayerStatus: "" });
+    }, 2000);
 
     setTimeout(() => runHostTimer(), 900);
 }
